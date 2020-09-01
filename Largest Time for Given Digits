@@ -1,0 +1,92 @@
+Given an array of 4 digits, return the largest 24 hour time that can be made.
+
+The smallest 24 hour time is 00:00, and the largest is 23:59.  Starting from 00:00, a time is larger if more time has elapsed since midnight.
+
+Return the answer as a string of length 5.  If no valid time can be made, return an empty string.
+
+ 
+
+Example 1:
+
+Input: [1,2,3,4]
+Output: "23:41"
+Example 2:
+
+Input: [5,5,5,5]
+Output: ""
+ 
+
+Note:
+
+A.length == 4
+0 <= A[i] <= 9
+
+
+NOTE: This problem looks easy but it is actually medium and has too many corner cases that will make code very lengthy
+
+//SOLUTION: 1
+//cpp my solution
+//this is my solution but the code has too many cases even though i tried best
+
+class Solution {
+public:
+    int search(vector<int>& a,int key){
+        for(int i=0;i<4;i++){
+            if(a[i] == key)
+                return i;
+        }
+        return -1;
+    }
+    string largestTimeFromDigits(vector<int>& a) {
+        sort(a.begin(),a.end());
+        vector<int> v = vector<int>(4,-1);
+        vector<int> tmp = a;
+        
+        int i,j,k=2,lim;
+        
+        for(i=0;i<4;i++){
+            if(i==0)
+                lim=k;
+            else if(i==1 && v[0]==2)
+                lim=3;
+            else if(i==2)
+                lim=5;
+            else
+                lim=9;
+            
+            for(j=lim;j>=0;j--){
+                int ind = search(tmp,j);
+                if(ind !=-1){
+                    v[i]=j;
+                    tmp[ind] = -1;
+                    break;
+                }
+            }
+            if(j==-1){
+                if(i==0)
+                    return "";
+                --k;
+                i=-1;
+                tmp=a;
+            }
+            sort(tmp.begin(),tmp.end()); 
+        }
+        return to_string(v[0])+to_string(v[1])+string(":")+to_string(v[2])+to_string(v[3]);
+    }
+};
+
+
+//SOLUTION 2:
+//cpp not my solution though, it uses brute force as there are only 24 permutations instead of corner cases
+// the code looks much cleaner here
+
+class Solution {
+public:
+    string largestTimeFromDigits(vector<int>& A) {
+      sort(begin(A), end(A),greater<int>());
+      do if ((A[0] < 2 || (A[0] == 2 && A[1] < 4)) && A[2] < 6) 
+          return to_string(A[0]) + to_string(A[1]) + ":" + to_string(A[2]) + to_string(A[3]);
+      while (prev_permutation(begin(A), end(A)));
+      return "";
+    }
+};
