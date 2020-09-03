@@ -88,3 +88,18 @@ public:
         return false;
     }
 };
+
+
+//cpp More optimzed one liner solution(not my solution)
+
+bool repeatedSubstringPattern(string str) 
+    {
+        return (str + str).substr(1, str.size() * 2 - 2).find(str)!=-1;
+    }
+    
+OR
+
+bool repeatedSubstringPattern(string str) 
+    {
+        return (str + str).find(str, 1) < str.size();
+    }
