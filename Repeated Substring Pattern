@@ -54,3 +54,37 @@ public:
 };
 
 
+//cpp my optimized solution
+
+class Solution {
+    int len;
+    string src;
+public:
+    bool findMatch(string pt){
+        int l1 = pt.length(),posStart;
+        
+        for(posStart=l1;posStart<len;posStart+=l1){
+            string slice = src.substr(posStart,l1);
+            if(slice.compare(pt)!=0)    break;
+        }
+
+        return (posStart == len);
+    }
+    
+    bool repeatedSubstringPattern(string s) {
+        src=s,len = s.length();
+        string tmp=string(1,s[0]),curr="";
+        
+        for(int i=1;i<=len/2;i++){
+            if(s[0] == s[i] && len%i==0){
+                curr = curr+tmp;
+                if(findMatch(curr))
+                    return true;
+                tmp=string(1,s[i]);
+            }else
+                tmp+=s[i];
+        }
+        
+        return false;
+    }
+};
