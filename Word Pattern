@@ -51,3 +51,34 @@ public:
         return true;
     }
 };
+
+
+//cpp solution 2 with words to index and char to index map(not my solution)
+
+class Solution {
+public:
+    bool wordPattern(string pattern, string str) {
+        unordered_map<string,int> mp;
+        unordered_map<char,int> pm;
+        
+        istringstream iss(str);
+        vector<string> words{istream_iterator<string>{iss},istream_iterator<string>{}};
+        
+        int len = pattern.length(),sz = words.size();
+        
+        if(len!=sz) return false;
+        
+        for(int i=0;i<sz;i++){
+            if(mp.find(words[i])!=mp.end()){
+                if(pattern[mp.at(words[i])]!=pattern[i])
+                    return false;
+            }else if(pm.find(pattern[i])!=pm.end()){
+                return false;
+            }else{
+                mp[words[i]] = i;
+                pm[pattern[i]] = i;
+            }
+        }
+        return true;
+    }
+};
