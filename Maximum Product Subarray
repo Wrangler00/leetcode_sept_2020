@@ -27,3 +27,25 @@ int maxProduct(vector<int>& n) {
         
         return ans;
     }
+
+//cpp not my solution  O(n) solution
+
+class Solution {
+public:
+    int maxProduct(vector<int>& n) {
+        int sz = n.size();
+        int minVal,maxVal,maxProduct;
+        
+        minVal=maxVal=maxProduct=n[0];
+
+        for (int i = 1; i < sz; i++) { 
+            if (n[i] < 0) swap(maxVal, minVal); 
+            
+            maxVal = max(n[i], maxVal * n[i]); 
+            minVal = min(n[i], minVal * n[i]); 
+            maxProduct = max(maxProduct, maxVal); 
+        } 
+        
+        return maxProduct; 
+    }
+};
