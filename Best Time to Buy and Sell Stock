@@ -33,3 +33,17 @@ public:
         return ans;
     }
 };
+
+//cpp my solution [more optimized]
+
+int maxProfit(vector<int>& p) {
+        int minn = INT_MAX,ans=0;
+        
+        for(auto v:p)
+            if(v>minn)   
+                ans = max(ans,v-minn);
+            else 
+                minn = min(minn,v);
+        
+        return ans;
+    }
