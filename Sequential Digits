@@ -1,0 +1,147 @@
+An integer has sequential digits if and only if each digit in the number is one more than the previous digit.
+
+Return a sorted list of all the integers in the range [low, high] inclusive that have sequential digits.
+
+ 
+
+Example 1:
+
+Input: low = 100, high = 300
+Output: [123,234]
+Example 2:
+
+Input: low = 1000, high = 13000
+Output: [1234,2345,3456,4567,5678,6789,12345]
+ 
+
+Constraints:
+
+10 <= low <= high <= 10^9
+
+//cpp my attempt [TIME LIMIT EXCEEDED]
+
+class Solution {
+public:
+    vector<int> sequentialDigits(int low, int high) {
+        vector<int> ans;
+        string st = to_string(low);
+        int len = st.length();
+        int first = st[0]-'0';
+        int make = low,tmp=first;
+        
+        while(make<=high){
+            int build=0;
+            int 
+            for(int i=0;i<len;i++){
+                if(tmp+i>9)
+                    break;
+                build = build*10+(tmp+i);
+            }
+            // cout<<build<<endl;
+            if(to_string(build).length()==len && build<=high)
+                ans.push_back(build);
+            else{
+                ++len;
+                tmp=0;
+            }
+            ++tmp;
+            make=build;
+        }
+        return ans;
+    }
+};
+
+//cpp my attempt 2 [TIME LIMIT EXCEEDED]
+
+class Solution {
+public:
+    vector<int> sequentialDigits(int low, int high) {
+        string src = "0123456789";
+        vector<int> ans;
+        string st = to_string(low);
+        int len = st.length();
+        int first = st[0]-'0';
+        
+        int make = low,pos = first;
+        
+        while(make<=high){
+            if(len+pos<=10){
+                make = stoi(src.substr(pos,len));
+                if(make<=high)
+                    ans.push_back(make);
+                ++pos;
+            }else{
+                pos=1;
+                ++len;
+            }
+        }
+        return ans;
+    }
+};
+
+//cpp my solution [ACCEPTED]
+//NOTE: the above solution was also correct just that in else part i havent handled corner cases
+
+class Solution {
+public:
+    vector<int> sequentialDigits(int low, int high) {
+        string src = "0123456789";
+        vector<int> ans;
+        string st = to_string(low);
+        int len = st.length();
+        int first = st[0]-'0';
+        
+        int make = low,pos = first;
+        
+        while(make<=high){
+            if(len+pos<=10){
+                make = stoi(src.substr(pos,len));
+                if(make>=low && make<=high)
+                    ans.push_back(make);
+                ++pos;
+            }else{
+                pos=1;
+                ++len;
+                if(len>9)
+                   break;
+            }
+        }
+        return ans;
+    }
+};
+
+//cpp my solution 2 [ACCEPTED]
+//NOTE: this is a fix of attempt 1
+
+class Solution {
+public:
+    vector<int> sequentialDigits(int low, int high) {
+        vector<int> ans;
+        string st = to_string(low);
+        int len = st.length();
+        int first = st[0]-'0';
+        int make = low,tmp=first;
+        
+        while(make<=high){
+            int build=0;
+            for(int i=0;i<len;i++){
+                if(tmp+i>9)
+                    break;
+                build = build*10+(tmp+i);
+            }
+            
+            if(to_string(build).length()==len){
+                if(build<=high && build>=low)
+                    ans.push_back(build);
+            }else{
+                ++len;
+                tmp=0;
+                if(len>9)
+                    break;
+            }
+            ++tmp;
+            make=build;
+        }
+        return ans;
+    }
+};
