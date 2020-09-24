@@ -37,3 +37,15 @@ char findTheDifference(string s, string t) {
         
         return sum^t[sz];
     }
+
+
+//solution 2 (my optimsation of solution 1)
+
+char findTheDifference(string s, string t) {
+        int sz = t.size()-1,sum=t[sz];
+        
+        for(int i=0;i<sz;i++) 
+            sum+=t[i]-s[i];
+        
+        return sum;
+    }
