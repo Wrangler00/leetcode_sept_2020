@@ -1,0 +1,65 @@
+Given an unsorted integer array, find the smallest missing positive integer.
+
+Example 1:
+
+Input: [1,2,0]
+Output: 3
+Example 2:
+
+Input: [3,4,-1,1]
+Output: 2
+Example 3:
+
+Input: [7,8,9,11,12]
+Output: 1
+
+//my javscript solution O(n) time and O(1) space
+
+var firstMissingPositive = function(nums) {
+    let sz = nums.length,ans=0;
+    
+    nums = nums.map(i=>i.toString());
+    nums.forEach((i,ind)=>{
+        let a = parseInt(i.split("#")[0]);
+        if(a>0 && a<=sz)
+            nums[a-1] = nums[a-1].split("#")[0]+"#"+0;
+    })
+    
+    nums.some((i,ind)=>{
+        if(i.split("#").length==1){
+            ans=ind+1;
+            return true;
+        }
+        return false;
+    });
+    
+    return ans || sz+1;
+};
+
+//cpp my solution 
+
+class Solution {
+    
+public:
+    int firstMissingPositive(vector<int>& nm) {
+        const int LIM = 300000000;
+        int ans=0,sz = nm.size();
+        
+        for(int i=0;i<sz;i++){
+            int tmp = nm[i]%LIM;
+            if(tmp>0 && tmp<=sz){
+                if(nm[tmp-1]<0)
+                    nm[tmp-1] = ((nm[tmp-1]%LIM)-LIM);
+                else
+                    nm[tmp-1] = ((nm[tmp-1]%LIM)+LIM);
+            }    
+        }
+        
+        for(int i=0;i<sz;i++){
+            if((nm[i]>-LIM && nm[i]<LIM) || (nm[i]>=2000000000))
+                return i+1;
+        }
+        
+        return sz+1;
+    }
+};
