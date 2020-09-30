@@ -1,3 +1,92 @@
+Given a non-empty string s and a dictionary wordDict containing a list of non-empty words, determine if s can be segmented into a space-separated sequence of one or more dictionary words.
+
+Note:
+
+The same word in the dictionary may be reused multiple times in the segmentation.
+You may assume the dictionary does not contain duplicate words.
+Example 1:
+
+Input: s = "leetcode", wordDict = ["leet", "code"]
+Output: true
+Explanation: Return true because "leetcode" can be segmented as "leet code".
+Example 2:
+
+Input: s = "applepenapple", wordDict = ["apple", "pen"]
+Output: true
+Explanation: Return true because "applepenapple" can be segmented as "apple pen apple".
+             Note that you are allowed to reuse a dictionary word.
+Example 3:
+
+Input: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
+Output: false
+
+//cpp my own solution using Trie ,Dp and DFS
+//go down to see my wrong attempt
+
+class Trie_node{
+public:
+    vector<Trie_node *> next;
+    bool end;
+    Trie_node()
+    {
+        next = std::vector<Trie_node *>(26,NULL);
+        end = false;
+    }
+};
+
+class Trie{
+public:
+    Trie_node *root;
+    Trie(){
+        root = new Trie_node();
+    }
+
+    void insert(string &word) {
+        Trie_node *node = root;
+        for(char c : word)
+        {
+            if(node ->next[c - 'a'] == NULL)
+                node ->next[c - 'a'] = new Trie_node();
+            node = node ->next[c - 'a'];
+        }
+        node->end = true;
+    }
+    
+    bool dfs(int ind,int sz,string s,vector<int> &dp){
+        Trie_node* pNode = root;
+        
+        for(int i=ind;i<sz;i++){
+            if(pNode ->next[s[i]-'a'] == NULL)
+                return false;
+            
+            pNode = pNode->next[s[i]-'a'];
+            
+            if(pNode->end){
+                if(i>=sz-1) return true;
+                
+                if(dp[i+1] == -1)   dp[i+1] = dfs(i+1,sz,s,dp);
+                
+                if(dp[i+1]) return true;
+            }
+        }
+        
+        return false;
+    }
+};
+
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wd) {
+        int sz = s.length();
+        Trie *T = new Trie();
+        vector<int> dp(sz,-1);
+        for(auto w:wd)  T->insert(w);
+        
+        bool ans = T->dfs(0,sz,s,dp);
+        return ans;
+    }
+};
+
 //cpp my attempt wrong ans
 
 class Trie_node{
