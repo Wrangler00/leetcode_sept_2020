@@ -37,11 +37,7 @@ var firstMissingPositive = function(nums) {
 };
 
 //cpp my solution 
-
-class Solution {
-    
-public:
-    int firstMissingPositive(vector<int>& nm) {
+int firstMissingPositive(vector<int>& nm) {
         const int LIM = 300000000;
         int ans=0,sz = nm.size();
         
@@ -56,10 +52,9 @@ public:
         }
         
         for(int i=0;i<sz;i++){
-            if((nm[i]>-LIM && nm[i]<LIM) || (nm[i]>=2000000000))
+            if((nm[i]>-LIM && nm[i]<LIM) || (nm[i]>=2*LIM))
                 return i+1;
         }
         
         return sz+1;
     }
-};
